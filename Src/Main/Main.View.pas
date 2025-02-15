@@ -42,7 +42,8 @@ uses
   Aurelius.Criteria.Linq,
   Aurelius.Sql.Sqlite,
   Aurelius.Schema.Sqlite,
-  Aurelius.Comp.Connection, Vcl.Grids, Vcl.DBGrids, Aurelius.Bind.BaseDataset, Aurelius.Bind.Dataset;
+  Aurelius.Comp.Connection, Vcl.Grids, Vcl.DBGrids, Aurelius.Bind.BaseDataset, Aurelius.Bind.Dataset, Aurelius.Linq,
+  Aurelius.Comp.Manager;
 
 type
   TMainView = class(TForm)
@@ -79,6 +80,7 @@ type
     Label6: TLabel;
     edtFiltrar: TEdit;
     BitBtn1: TBitBtn;
+    AureliusManager1: TAureliusManager;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnCriarAtualizarBDClick(Sender: TObject);

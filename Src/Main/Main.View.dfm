@@ -1,7 +1,7 @@
 object MainView: TMainView
   Left = 0
   Top = 0
-  Caption = 'Aurelius - Demo Code4D'
+  Caption = 'Aurelius - Demo Code4D - v1.0.0'
   ClientHeight = 551
   ClientWidth = 719
   Color = clBtnFace
@@ -23,7 +23,6 @@ object MainView: TMainView
     Align = alClient
     BevelOuter = bvNone
     TabOrder = 0
-    ExplicitWidth = 621
     object Panel1: TPanel
       AlignWithMargins = True
       Left = 3
@@ -40,8 +39,6 @@ object MainView: TMainView
       Padding.Right = 5
       Padding.Bottom = 6
       TabOrder = 0
-      ExplicitLeft = 2
-      ExplicitTop = 0
       object btnCriarAtualizarBD: TButton
         Left = 5
         Top = 8
@@ -62,9 +59,6 @@ object MainView: TMainView
       ActivePage = TabSheet3
       Align = alClient
       TabOrder = 1
-      ExplicitTop = 41
-      ExplicitWidth = 621
-      ExplicitHeight = 510
       object TabSheet1: TTabSheet
         Caption = 'Cadastro / Altera'#231#227'o de Produto'
         object Label1: TLabel
@@ -155,8 +149,8 @@ object MainView: TMainView
           OnClick = btnSalvarAlteracaoProdutoClick
         end
         object btnExcluirProduto: TBitBtn
-          Left = 323
-          Top = 175
+          Left = 363
+          Top = 207
           Width = 134
           Height = 25
           Cursor = crHandPoint
@@ -202,7 +196,6 @@ object MainView: TMainView
           Height = 359
           Anchors = [akLeft, akTop, akBottom]
           TabOrder = 2
-          ExplicitHeight = 377
         end
       end
       object TabSheet3: TTabSheet
@@ -230,8 +223,6 @@ object MainView: TMainView
           Align = alTop
           BevelOuter = bvNone
           TabOrder = 1
-          ExplicitTop = -6
-          ExplicitWidth = 613
           object Label6: TLabel
             Left = 223
             Top = 0
@@ -249,7 +240,6 @@ object MainView: TMainView
             Caption = 'Buscar todos os produtos'
             TabOrder = 0
             OnClick = btnBuscarTodosProdutosClick
-            ExplicitTop = 0
           end
           object edtFiltrar: TEdit
             Left = 223
@@ -291,12 +281,17 @@ object MainView: TMainView
   end
   object AureliusDataset1: TAureliusDataset
     FieldDefs = <>
-    Left = 476
-    Top = 315
+    Left = 588
+    Top = 291
   end
   object DataSource1: TDataSource
     DataSet = AureliusDataset1
-    Left = 472
+    Left = 576
     Top = 376
+  end
+  object AureliusManager1: TAureliusManager
+    Connection = AureliusConnection1
+    Left = 324
+    Top = 323
   end
 end
