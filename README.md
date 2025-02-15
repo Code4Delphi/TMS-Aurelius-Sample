@@ -10,6 +10,38 @@ Mapeamento Objeto-Relacional (Object-Relational Mapping): é uma técnica para a
 
 ![ORM](https://github.com/user-attachments/assets/9bc388be-dd8f-4cba-931f-a830402dd829)
 
+## Como ficaria esse exemplo no Delphi
+```
+unit Produtos.Entity;
+
+interface
+
+uses
+  Aurelius.Mapping.Attributes;
+
+type
+  [Entity]
+  [Automapping]
+  TProduto = class
+  private
+    FId: Integer;
+    FNome: string;
+    FPreco: Double;
+    FDescricao: string;
+  public
+    property Id: Integer read FId write FId;
+    property Nome: string read FNome write FNome;
+    property Preco: Double read FPreco write FPreco;
+    property Descricao: string read FDescricao write FDescricao;
+  end;
+
+implementation
+
+initialization
+  RegisterEntity(TProduto);
+
+end.
+```
 
 ## O que ele faz e quais vantagens
 
