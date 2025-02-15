@@ -17,13 +17,32 @@ uses
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.ComCtrls,
+  Data.DB,
+  FireDAC.Stan.Intf,
+  FireDAC.Stan.Option,
+  FireDAC.Stan.Error,
+  FireDAC.UI.Intf,
+  FireDAC.Phys.Intf,
+  FireDAC.Stan.Def,
+  FireDAC.Stan.Pool,
+  FireDAC.Stan.Async,
+  FireDAC.Phys,
+  FireDAC.Phys.SQLite,
+  FireDAC.Phys.SQLiteDef,
+  FireDAC.Stan.ExprFuncs,
+  FireDAC.Phys.SQLiteWrapper.Stat,
+  FireDAC.VCLUI.Wait,
+  FireDAC.Comp.Client,
   Produtos.Entity,
   Aurelius.Engine.DatabaseManager,
   Aurelius.Engine.ObjectManager,
   Aurelius.Drivers.Interfaces,
-  Aurelius.Drivers.SQLite,
+  Aurelius.Drivers.FireDac,
   Aurelius.Criteria.Base,
-  Aurelius.Criteria.Linq;
+  Aurelius.Criteria.Linq,
+  Aurelius.Sql.Sqlite,
+  Aurelius.Schema.Sqlite,
+  Aurelius.Comp.Connection, Vcl.Grids, Vcl.DBGrids, Aurelius.Bind.BaseDataset, Aurelius.Bind.Dataset;
 
 type
   TMainView = class(TForm)
@@ -49,6 +68,17 @@ type
     btnBuscar: TBitBtn;
     mmResultados: TMemo;
     btnExcluirProduto: TBitBtn;
+    FDConnection1: TFDConnection;
+    AureliusConnection1: TAureliusConnection;
+    TabSheet3: TTabSheet;
+    AureliusDataset1: TAureliusDataset;
+    DataSource1: TDataSource;
+    DBGrid1: TDBGrid;
+    Panel2: TPanel;
+    btnBuscarTodosProdutos: TButton;
+    Label6: TLabel;
+    edtFiltrar: TEdit;
+    BitBtn1: TBitBtn;
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure btnCriarAtualizarBDClick(Sender: TObject);
@@ -57,8 +87,11 @@ type
     procedure btnSalvarAlteracaoProdutoClick(Sender: TObject);
     procedure btnBuscarClick(Sender: TObject);
     procedure btnExcluirProdutoClick(Sender: TObject);
+    procedure btnBuscarTodosProdutosClick(Sender: TObject);
+    procedure BitBtn1Click(Sender: TObject);
   private
     FConnection: IDBConnection;
+    //PARA MANIPULACAO DOS OBJETOS
     FManager: TObjectManager;
     FUltimoProdutoBuscado: TProduto;
     procedure LimparCampos;
@@ -76,7 +109,7 @@ implementation
 procedure TMainView.FormCreate(Sender: TObject);
 begin
   ReportMemoryLeaksOnShutdown := True;
-  FConnection := TSQLiteNativeConnectionAdapter.Create(ChangeFileExt(ParamStr(0), '.db'));
+  FConnection := AureliusConnection1.CreateConnection;
   TDatabaseManager.Update(FConnection);
 
   FManager := TObjectManager.Create(FConnection);
@@ -150,18 +183,18 @@ end;
 procedure TMainView.btnBuscarClick(Sender: TObject);
 var
   LStrBuscar: string;
-  LProdutosList: TList<TProduto>; // TList<TProduto>;
+  LProdutosList: TList<TProduto>;
   LProduto: TProduto;
 begin
   LStrBuscar := Trim(edtBuscar.Text);
 
   LProdutosList := FManager.Find<TProduto>
-  .Where(
-    Linq['nome'].Contains(LStrBuscar)
-    or Linq['descricao'].Contains(LStrBuscar)
-  )
-  .OrderBy('nome')
-  .List;
+    .Where(
+      Linq['nome'].Contains(LStrBuscar)
+      or Linq['descricao'].Contains(LStrBuscar)
+    )
+    .OrderBy('nome')
+    .List;
   try
     mmResultados.Lines.Clear;
 
@@ -189,6 +222,25 @@ begin
   FManager.Remove(FUltimoProdutoBuscado);
   ShowMessage('Produto excluído');
   Self.LimparCampos;
+end;
+
+procedure TMainView.btnBuscarTodosProdutosClick(Sender: TObject);
+begin
+  AureliusDataset1.Close;
+  AureliusDataset1.SetSourceCriteria(FManager.Find<TProduto>.OrderBy('nome'));
+  AureliusDataset1.Open;
+end;
+
+procedure TMainView.BitBtn1Click(Sender: TObject);
+begin
+  AureliusDataset1.Close;
+  AureliusDataset1.SetSourceCriteria(
+    FManager.Find<TProduto>
+    .Where(
+      Linq['nome'].Contains(edtFiltrar.Text)
+      or Linq['descricao'].Contains(edtFiltrar.Text)
+    ));
+  AureliusDataset1.Open;
 end;
 
 end.
