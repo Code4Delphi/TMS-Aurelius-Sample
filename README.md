@@ -8,6 +8,9 @@ Mapeamento Objeto-Relacional (Object-Relational Mapping): é uma técnica para a
 | --- | --- | --- |
 | Registro do banco | ——————-> | Objetos |
 
+![ORM](https://github.com/user-attachments/assets/9bc388be-dd8f-4cba-931f-a830402dd829)
+
+
 ## O que ele faz e quais vantagens
 
 - Possibilidade de troca de motor de busca de forma rápida e segura
